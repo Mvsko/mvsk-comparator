@@ -1,0 +1,36 @@
+{
+  "history": [
+    {
+      "query": "rtx 4080",
+      "result": "Prix trouvé: 199.96 €"
+    },
+    {
+      "query": "rtx 4080",
+      "result": "Prix trouvé: 199.96 €"
+    },
+    {
+      "query": "rtx 4070",
+      "result": "Une erreur est survenue."
+    },
+    {
+      "query": "rtx 4080",
+      "result": "Une erreur est survenue."
+    },
+    {
+      "query": "rtx 4070",
+      "result": "Prix trouvé: 199.96 €"
+    },
+    {
+      "query": "rtx 4070",
+      "result": "Un produit avec le prix approximativement égal à 607 € a été trouvé."
+    },
+    {
+      "query": "ps4",
+      "result": "Une erreur est survenue : Error: failed to find element matching selector \"#totalFound\""
+    },
+    {
+      "query": "gtx 1060",
+      "result": "Un produit avec le prix approximativement égal à 82 € a été trouvé."
+    }
+  ]
+}
