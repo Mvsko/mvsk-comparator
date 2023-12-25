@@ -4,17 +4,17 @@ function csmanager(){
     const options = {
         types: {
           ValidEv: {
-            label: 'Validé', // Le nouveau préfixe que vous voulez utiliser
+            label: 'Validé',
             color: 'green',
             badge: '✅'
           },
           WarningEv: {
-              label: 'Avertissement', // Le nouveau préfixe que vous voulez utiliser
+              label: 'Avertissement',
               color: 'yellow',
               badge: '⚠️'
             },
           ErrorEv: {
-              label: 'Erreur', // Le nouveau préfixe que vous voulez utiliser
+              label: 'Erreur',
               color: 'red',
               badge: '⛔'
             }

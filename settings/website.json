@@ -1,16 +1,17 @@
 {
     "websites": [
       {
-        "name": "Google",
-        "url": "https://www.google.com"
+        "name": "Rue-Mongallet",
+        "url": "https://www.rue-montgallet.com/",
+        "urlsearch": "https://www.rue-montgallet.com/prix/rechercher?kw="
       },
       {
         "name": "Amazon",
-        "url": "https://www.amazon.com"
-      },
-      {
-        "name": "Cdiscount",
-        "url": "https://www.cdiscount.com"
+        "url": "https://www.amazon.com",
+        "urlsearch": "https://www.amazon.com"
       }
-    ]
+    ],
+    "default": {
+      "name": "Rue-Mongallet"
+    }
   }

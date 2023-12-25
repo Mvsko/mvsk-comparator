@@ -66,8 +66,11 @@ function saveToHistory(searchData) {
         });
       } else {
         pricefunding.getPrice(answer).then(price => {
-          console.log(price);
-          saveToHistory({ query: answer, result: price });
+          if (price.success == true){
+            saveToHistory({ success: price.success, query: answer, productName: price.productName, price: price.price, searchDuration: price.searchDuration, link: price.productLink, offerLink: price.realOfferLink})
+          } else {
+            saveToHistory({ success: price.success, query: answer, searchDuration: price.searchDuration });
+          }
           rlhud();
         });
       }
