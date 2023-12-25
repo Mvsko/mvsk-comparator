@@ -1,6 +1,7 @@
 const readline = require('readline');
 const pricefunding = require('./getPrice.js');
 const fs = require('fs');
+const { start } = require('repl');
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -12,6 +13,31 @@ const historyFile = './logs/searchHistory.json';
 console.clear();
 
 
+
+function startMainMenu(){
+  rl.question(__dirname + "> ", (answer) => {
+    let command = answer.split(' ')[0];
+
+    switch(command){
+      case "help":
+        console.log('Liste des commandes disponibles :\n- help\n- clear\n- comp\n- exit');
+        break;
+      case "exit":
+        rl.close();
+        return;
+      case "clear":
+        console.clear()
+        break;
+      case "comp":
+        rlhud()
+        return;
+      default:
+        console.log('Commande inconnue. Tapez "help" pour afficher la liste des commandes.\n');
+        break;
+    }
+    startMainMenu();
+  });
+}
 
 
 
@@ -30,7 +56,14 @@ function saveToHistory(searchData) {
   function rlhud() {
     rl.question('Quel produit souhaitez-vous regarder ? (tapez "exit" pour quitter) : ', (answer) => {
       if (answer.toLowerCase() === 'exit') {
-        rl.close();
+        rl.question('> Souhaitez-vous retourner au menu ou quitter le programme ?:  ', (answer) => {
+          if (answer.trim().toLowerCase() === "exit") {
+            console.log('Fermeture du programme.');
+            rl.close();
+          } else {
+            startMainMenu();
+          }
+        });
       } else {
         pricefunding.getPrice(answer).then(price => {
           console.log(price);
@@ -42,4 +75,4 @@ function saveToHistory(searchData) {
   }
 
 
-module.exports = {rlhud};
+module.exports = {rlhud, startMainMenu};

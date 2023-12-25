@@ -12,15 +12,21 @@ async function getPrice(productName) {
   const browser = await puppeteer.launch({ headless: "new" }); // Changé à true pour mode sans tête
   const page = await browser.newPage();
 
+  const startTime = Date.now(); // Enregistre le temps de début
+
   try {
     await page.goto(`https://www.rue-montgallet.com/prix/rechercher?kw=${encodeURIComponent(productName)}`, {
       waitUntil: 'networkidle0'
     });
 
-    const totalFoundSelector = '#totalFound';
-    const totalFoundText = await page.$eval(totalFoundSelector, el => el.innerText);
-    const totalFound = parseInt(totalFoundText.match(/\d+/)[0], 10);
-    console.log(`\nTotal trouvé : ${totalFound}`);
+    let totalFound;
+    try {
+      const totalFoundText = await page.$eval('#totalFound', el => el.innerText);
+      totalFound = parseInt(totalFoundText.match(/\d+/)[0], 10);
+      console.log(`\nTotal trouvé : ${totalFound}`);
+    } catch (error) {
+      return "\nErreur : Le sélecteur '#totalFound' est introuvable sur la page.";
+    }
 
     if (totalFound > 50) {
       await page.evaluate(async () => {
@@ -42,14 +48,18 @@ async function getPrice(productName) {
     }
     
     if (totalFound == 0){
-      return "Aucun produit correspondant au prix minimum indiqué n'a été trouvé.";
+      return "\nErreur: Aucun produit correspondant au prix minimum indiqué n'a été trouvé.";
     }
 
-    const minPriceSelector = '.irs-from';
-    await page.waitForSelector(minPriceSelector, { timeout: 5000 });
-    const minPriceText = await page.$eval(minPriceSelector, el => el.innerText);
-    const minPrice = parseFloat(minPriceText.replace(/[^\d,.-]/g, '').replace(',', '.'));
-    console.log(`\n[LOGS] > Prix minimum trouvé : ${minPrice} €`);
+    let minPrice;
+    try {
+      await page.waitForSelector('.irs-from', { timeout: 5000 });
+      const minPriceText = await page.$eval('.irs-from', el => el.innerText);
+      minPrice = parseFloat(minPriceText.replace(/[^\d,.-]/g, '').replace(',', '.'));
+      console.log(`\n[LOGS] > Prix minimum trouvé : ${minPrice} €`);
+    } catch (error) {
+      return "\nErreur : Le sélecteur '.irs-from' est introuvable sur la page.";
+    }
 
 
     const prices = await page.$$eval('.prix', nodes => nodes.map(node => {
@@ -63,6 +73,9 @@ async function getPrice(productName) {
 
 
     const productWithMinPrice = prices.find(price => areFloatsEqual(price, minPrice));
+
+    const endTime = Date.now(); // Enregistre le temps de fin
+    const searchDuration = (endTime - startTime) / 1000; // Calcule la durée en secondes
 
     if (productWithMinPrice !== undefined) {
       return `Un produit avec le prix approximativement égal à ${minPrice} € a été trouvé.`;

@@ -5,4 +5,4 @@ const hud = require ('./settings/hud.js');
 config.loadWebsiteData();
 const getwebdata = config.getWebsiteData();
 
-hud.rlhud();
+hud.startMainMenu();
